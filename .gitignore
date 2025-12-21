@@ -1,0 +1,11 @@
+cat > .gitignore << 'EOF'
+# Plugins instalados
+.local/share/nvim/
+
+# Caché y estado
+.cache/
+.state/
+
+# Logs
+*.log
+EOF

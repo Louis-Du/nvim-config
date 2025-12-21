@@ -1,0 +1,2 @@
+-- LSP vacío por ahora
+-- lo activaremos cuando jdtls esté bien instalado
