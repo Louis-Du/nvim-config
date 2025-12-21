@@ -3,10 +3,6 @@ vim.call("plug#begin", "~/.local/share/nvim/plugged")
 -- LSP
 vim.cmd("Plug 'neovim/nvim-lspconfig'")
 
--- Mason (instalador de LSPs)
-vim.cmd("Plug 'williamboman/mason.nvim'")
-vim.cmd("Plug 'williamboman/mason-lspconfig.nvim'")
-
 -- Autocompletado
 vim.cmd("Plug 'hrsh7th/nvim-cmp'")
 vim.cmd("Plug 'hrsh7th/cmp-nvim-lsp'")
