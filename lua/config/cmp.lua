@@ -25,3 +25,11 @@ cmp.setup({
     { name = 'path' },
   },
 })
+
+-- Autocompletado para :
+cmp.setup.cmdline(':', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = {
+    { name = 'cmdline' }
+  }
+})
