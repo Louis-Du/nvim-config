@@ -25,6 +25,23 @@ nnoremap <leader>fg :Telescope live_grep<CR>
 nnoremap <leader>fb :Telescope buffers<CR>
 nnoremap <leader>fs :Telescope lsp_document_symbols<CR>
 
+" Usar clipboard del sistema
+
+" Copiar
+vnoremap <C-c> "+y
+nnoremap <C-c> "+yy
+
+" Cortar
+vnoremap <C-x> "+d
+nnoremap <C-x> "+dd
+
+" Pegar
+nnoremap <C-p> "+p
+vnoremap <C-p> "+p
+
+" Seleccionar todo
+nnoremap <C-a> ggVG
+
 " Configuración Lua modular
 lua require("config.cmp")
 lua require("config.treesitter")
