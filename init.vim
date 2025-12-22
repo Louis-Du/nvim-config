@@ -8,6 +8,10 @@ set mouse=a
 syntax enable
 set clipboard=unnamedplus
 set termguicolors
+set wildmenu
+set wildmode=longest:full,full
+set wildignorecase
+set wildoptions=pum
 
 let mapleader=" "
 
@@ -52,3 +56,4 @@ lua require("config.comment")
 lua require("config.format")
 lua require("config.telescope")
 lua require("config.luasnip")
+lua require("config.whichkey")
