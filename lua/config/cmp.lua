@@ -4,6 +4,10 @@ if not ok then return end
 local luasnip_ok, luasnip = pcall(require, "luasnip")
 if not luasnip_ok then return end
 
+require("luasnip.loaders.from_lua").lazy_load({
+  paths = "~/.config/nvim/lua/snippets"
+})
+
 cmp.setup({
   snippet = {
     expand = function(args)
@@ -16,7 +20,6 @@ cmp.setup({
     ['<CR>'] = cmp.mapping.confirm({ select = true }),
   }),
   sources = {
-    { name = 'nvim_lsp' },
     { name = 'luasnip' },
     { name = 'buffer' },
     { name = 'path' },
