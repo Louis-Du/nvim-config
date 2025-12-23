@@ -1,20 +1,28 @@
-local wk = require("which-key")
+local ok, wk = pcall(require, "which-key")
+if not ok then return end
 
 wk.setup({
   plugins = {
-    spelling = { enabled = true },
+    marks = false,
+    registers = false,
+  },
+  window = {
+    border = "rounded",
+    position = "bottom",
+  },
+  layout = {
+    spacing = 4,
+    align = "left",
   },
 })
 
 wk.register({
-  ["<leader>"] = {
-    e = "Explorador",
-    f = {
-      name = "Buscar",
-      f = "Archivos",
-      g = "Texto",
-      b = "Buffers",
-      s = "Símbolos",
-    },
+  e = { "Explorador" },
+  f = {
+    name = "Buscar",
+    f = "Archivos",
+    g = "Texto",
+    b = "Buffers",
+    s = "Símbolos LSP",
   },
-})
+}, { prefix = "<leader>" })

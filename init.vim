@@ -55,12 +55,12 @@ nnoremap <C-a> ggVG
 
 lua require("config.cmp")
 lua require("config.treesitter")
-lua require("config.lsp")
+" lua require("config.lsp")
 lua require("config.nvimtree")
 lua require("config.autopairs")
 lua require("config.comment")
 lua require("config.format")
 lua require("config.telescope")
 lua require("config.luasnip")
-lua require("config.whichkey")  " ← ESTE
+lua require("config.whichkey")  
 

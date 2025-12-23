@@ -1,3 +1,4 @@
+local lspkind = require("lspkind")
 local cmp = require("cmp")
 local luasnip = require("luasnip")
 
@@ -23,10 +24,57 @@ cmp.setup({
 })
 
 -- Autocompletado para :
-cmp.setup.cmdline(":", {
-  mapping = cmp.mapping.preset.cmdline(),
+cmp.setup.cmdline(':', {
+  mapping = {
+    ['<CR>'] = {
+      c = function(fallback)
+        fallback() -- ejecuta el comando escrito
+      end,
+    },
+
+    ['<Up>'] = {
+      c = function()
+        if cmp.visible() then
+          cmp.select_prev_item()
+        else
+          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Up>', true, false, true), 'n', true)
+        end
+      end,
+    },
+
+    ['<Down>'] = {
+      c = function()
+        if cmp.visible() then
+          cmp.select_next_item()
+        else
+          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Down>', true, false, true), 'n', true)
+        end
+      end,
+    },
+
+    ['<Tab>'] = {
+      c = function()
+        cmp.select_next_item()
+      end,
+    },
+
+    ['<S-Tab>'] = {
+      c = function()
+        cmp.select_prev_item()
+      end,
+    },
+  },
+
   sources = {
-    { name = "cmdline" },
-    { name = "path" },
+    { name = 'cmdline' }
+  },
+
+  formatting = {
+    format = lspkind.cmp_format({
+      mode = 'symbol_text',
+      maxwidth = 50,
+      ellipsis_char = '…',
+    }),
   },
 })
+
