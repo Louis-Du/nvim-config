@@ -1,3 +1,7 @@
+lua << EOF
+vim.g.is_termux = vim.env.PREFIX ~= nil
+EOF
+
 " Opciones básicas
 set number
 set relativenumber
