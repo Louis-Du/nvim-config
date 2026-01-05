@@ -1,6 +1,9 @@
-local lspkind = require("lspkind")
-local cmp = require("cmp")
-local luasnip = require("luasnip")
+local lspkind_ok, lspkind = pcall(require, "lspkind")
+local cmp_ok, cmp = pcall(require, "cmp")
+if not cmp_ok then return end
+
+local luasnip_ok, luasnip = pcall(require, "luasnip")
+if not luasnip_ok then return end
 
 cmp.setup({
   snippet = {
@@ -69,12 +72,12 @@ cmp.setup.cmdline(':', {
     { name = 'cmdline' }
   },
 
-  formatting = {
+  formatting = lspkind_ok and {
     format = lspkind.cmp_format({
       mode = 'symbol_text',
       maxwidth = 50,
       ellipsis_char = '…',
     }),
-  },
+  } or {},
 })
 
