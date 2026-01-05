@@ -15,3 +15,6 @@ plugin/packer_compiled.lua
 # Backup files
 *.backup
 
+# AppImages y binarios
+*.appimage
+

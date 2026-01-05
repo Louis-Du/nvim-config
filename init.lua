@@ -25,15 +25,23 @@ require("plugins")
 -- ============================================================
 -- Configuración de plugins
 -- ============================================================
-require("config.cmp")
-require("config.treesitter")
-require("config.nvimtree")
-require("config.autopairs")
-require("config.comment")
-require("config.format")
-require("config.telescope")
-require("config.luasnip")
-require("config.whichkey")
+local function safe_require(module)
+  local ok, err = pcall(require, module)
+  if not ok then
+    vim.notify("Error loading " .. module .. ": " .. tostring(err), vim.log.levels.WARN)
+  end
+  return ok
+end
+
+safe_require("config.cmp")
+safe_require("config.treesitter")
+safe_require("config.nvimtree")
+safe_require("config.autopairs")
+safe_require("config.comment")
+safe_require("config.format")
+safe_require("config.telescope")
+safe_require("config.luasnip")
+safe_require("config.whichkey")
 
 -- ============================================================
 -- Keymaps generales
