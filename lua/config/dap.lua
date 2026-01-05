@@ -68,24 +68,30 @@ function M.setup()
   })
 
   -- Abrir/cerrar DAP-UI automáticamente
-  dap.listeners.after.event_initialized["dapui_config"] = function()
+  dap.listeners.after.event_initialized["dapui_auto_open"] = function()
     dapui.open()
   end
 
-  dap.listeners.before.event_terminated["dapui_config"] = function()
+  dap.listeners.before.event_terminated["dapui_auto_close_terminate"] = function()
     dapui.close()
   end
 
-  dap.listeners.before.event_exited["dapui_config"] = function()
+  dap.listeners.before.event_exited["dapui_auto_close_exit"] = function()
     dapui.close()
   end
 
-  -- Signos para breakpoints
-  vim.fn.sign_define('DapBreakpoint', { text='🔴', texthl='', linehl='', numhl='' })
-  vim.fn.sign_define('DapBreakpointCondition', { text='🟡', texthl='', linehl='', numhl='' })
-  vim.fn.sign_define('DapLogPoint', { text='📝', texthl='', linehl='', numhl='' })
-  vim.fn.sign_define('DapStopped', { text='▶️', texthl='', linehl='', numhl='' })
-  vim.fn.sign_define('DapBreakpointRejected', { text='❌', texthl='', linehl='', numhl='' })
+  -- Signos para breakpoints (con fallback ASCII)
+  vim.api.nvim_set_hl(0, 'DapBreakpoint', { fg = '#e51400' })
+  vim.api.nvim_set_hl(0, 'DapBreakpointCondition', { fg = '#ffae00' })
+  vim.api.nvim_set_hl(0, 'DapLogPoint', { fg = '#61afef' })
+  vim.api.nvim_set_hl(0, 'DapStopped', { fg = '#98c379' })
+  vim.api.nvim_set_hl(0, 'DapBreakpointRejected', { fg = '#ff0000' })
+  
+  vim.fn.sign_define('DapBreakpoint', { text='●', texthl='DapBreakpoint', linehl='', numhl='' })
+  vim.fn.sign_define('DapBreakpointCondition', { text='◆', texthl='DapBreakpointCondition', linehl='', numhl='' })
+  vim.fn.sign_define('DapLogPoint', { text='◉', texthl='DapLogPoint', linehl='', numhl='' })
+  vim.fn.sign_define('DapStopped', { text='▶', texthl='DapStopped', linehl='', numhl='' })
+  vim.fn.sign_define('DapBreakpointRejected', { text='✖', texthl='DapBreakpointRejected', linehl='', numhl='' })
 end
 
 return M
