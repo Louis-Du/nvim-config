@@ -63,4 +63,6 @@ lua require("config.format")
 lua require("config.telescope")
 lua require("config.luasnip")
 lua require("config.whichkey")  
+" lua require("config.dap")
+
 
