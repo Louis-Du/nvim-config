@@ -2,23 +2,90 @@
 local M = {}
 
 function M.setup()
-  local dap = require("dap")
-  local dapui = require("dapui")
+  local dap_ok, dap = pcall(require, "dap")
+  if not dap_ok then 
+    vim.notify("nvim-dap not found", vim.log.levels.ERROR)
+    return 
+  end
 
-  dapui.setup()
-  require("nvim-dap-virtual-text").setup()
+  local dapui_ok, dapui = pcall(require, "dapui")
+  if not dapui_ok then 
+    vim.notify("dapui not found", vim.log.levels.ERROR)
+    return 
+  end
 
-  dap.listeners.after.event_initialized["dapui"] = function()
+  local virtual_text_ok, virtual_text = pcall(require, "nvim-dap-virtual-text")
+  if not virtual_text_ok then
+    vim.notify("nvim-dap-virtual-text not found", vim.log.levels.WARN)
+  else
+    virtual_text.setup()
+  end
+
+  -- Configurar DAP-UI
+  dapui.setup({
+    icons = { expanded = "▾", collapsed = "▸", current_frame = "▸" },
+    mappings = {
+      expand = { "<CR>", "<2-LeftMouse>" },
+      open = "o",
+      remove = "d",
+      edit = "e",
+      repl = "r",
+      toggle = "t",
+    },
+    layouts = {
+      {
+        elements = {
+          { id = "scopes", size = 0.25 },
+          "breakpoints",
+          "stacks",
+          "watches",
+        },
+        size = 40,
+        position = "left",
+      },
+      {
+        elements = {
+          "repl",
+          "console",
+        },
+        size = 0.25,
+        position = "bottom",
+      },
+    },
+    floating = {
+      max_height = nil,
+      max_width = nil,
+      border = "single",
+      mappings = {
+        close = { "q", "<Esc>" },
+      },
+    },
+    windows = { indent = 1 },
+    render = {
+      max_type_length = nil,
+      max_value_lines = 100,
+    }
+  })
+
+  -- Abrir/cerrar DAP-UI automáticamente
+  dap.listeners.after.event_initialized["dapui_config"] = function()
     dapui.open()
   end
 
-  dap.listeners.before.event_terminated["dapui"] = function()
+  dap.listeners.before.event_terminated["dapui_config"] = function()
     dapui.close()
   end
 
-  dap.listeners.before.event_exited["dapui"] = function()
+  dap.listeners.before.event_exited["dapui_config"] = function()
     dapui.close()
   end
+
+  -- Signos para breakpoints
+  vim.fn.sign_define('DapBreakpoint', { text='🔴', texthl='', linehl='', numhl='' })
+  vim.fn.sign_define('DapBreakpointCondition', { text='🟡', texthl='', linehl='', numhl='' })
+  vim.fn.sign_define('DapLogPoint', { text='📝', texthl='', linehl='', numhl='' })
+  vim.fn.sign_define('DapStopped', { text='▶️', texthl='', linehl='', numhl='' })
+  vim.fn.sign_define('DapBreakpointRejected', { text='❌', texthl='', linehl='', numhl='' })
 end
 
 return M

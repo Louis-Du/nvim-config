@@ -1,6 +1,9 @@
-cat > .gitignore << 'EOF'
-# Plugins instalados
+# Plugins instalados (Packer)
+plugin/
 .local/share/nvim/
+
+# Packer compiled
+plugin/packer_compiled.lua
 
 # Caché y estado
 .cache/
@@ -8,4 +11,7 @@ cat > .gitignore << 'EOF'
 
 # Logs
 *.log
-EOF
+
+# Backup files
+*.backup
+
