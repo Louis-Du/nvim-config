@@ -28,8 +28,19 @@ map("n", "<leader>e", function()
   require("nvim-tree.api").tree.toggle()
 end, { desc = "Explorador archivos" })
 
+-- Volver a nvim-tree (foco) desde cualquier ventana
+map("n", "<leader>o", function()
+  require("nvim-tree.api").tree.focus()
+end, { desc = "Enfocar nvim-tree" })
+
 map("n", "<leader>r", ":NvimTreeFindFile<CR>", { desc = "Encontrar archivo" })
 map("n", "<leader>R", ":NvimTreeRefresh<CR>", { desc = "Refrescar árbol" })
+
+-- Navegación entre ventanas (alternativa)
+map("n", "<C-h>", "<C-w>h", { desc = "Ventana izquierda" })
+map("n", "<C-j>", "<C-w>j", { desc = "Ventana abajo" })
+map("n", "<C-k>", "<C-w>k", { desc = "Ventana arriba" })
+map("n", "<C-l>", "<C-w>l", { desc = "Ventana derecha" })
 
 -- ============================================================
 -- Trouble (diagnósticos) con compatibilidad de versiones
