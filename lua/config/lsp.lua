@@ -15,6 +15,8 @@ local capabilities = cmp_lsp.default_capabilities()
 local function find_jdtls_cmd()
   local possible_paths = {
     vim.fn.expand("~/.local/share/eclipse/jdt-language-server/bin/jdtls"),
+    vim.fn.expand("~/.local/share/eclipse/bin/jdtls"),
+    vim.fn.expand("~/.local/bin/jdtls"),
     "/usr/local/bin/jdtls",
     "/usr/bin/jdtls",
   }

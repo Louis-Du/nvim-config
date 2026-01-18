@@ -30,6 +30,7 @@ local function safe_require(module)
   return ok
 end
 
+safe_require("config.lsp")
 safe_require("config.cmp")
 safe_require("config.treesitter")
 safe_require("config.nvimtree")
@@ -38,9 +39,10 @@ safe_require("config.comment")
 safe_require("config.format")
 safe_require("config.telescope")
 safe_require("config.luasnip")
+safe_require("config.trouble")
 safe_require("config.whichkey")
 safe_require("config.bufferline")
-safe_require("config.trouble")
+
 
 -- Inicializar DAP
 local dap_ok = safe_require("config.dap")
