@@ -1,4 +1,3 @@
--- lua/plugins.lua
 -- Gestión de plugins con Packer.nvim
 
 -- Auto-instalador de Packer
@@ -50,6 +49,9 @@ return require('packer').startup(function(use)
     run = ':TSUpdate'
   }
 
+  -- Java LSP y debugging
+  use 'mfussenegger/nvim-jdtls'
+
   -- Explorador de archivos
   use 'nvim-tree/nvim-tree.lua'
 
@@ -68,6 +70,16 @@ return require('packer').startup(function(use)
   use 'nvim-neotest/nvim-nio'  -- Dependencia obligatoria para dap-ui
   use 'theHamsta/nvim-dap-virtual-text'
 
+  use {
+  "akinsho/bufferline.nvim",
+  tag = "*",
+  requires = "nvim-tree/nvim-web-devicons"
+}
+
+  use {
+  "folke/trouble.nvim",
+  requires = "nvim-tree/nvim-web-devicons",
+}
   -- Sincronizar plugins si es primera instalación
   if packer_bootstrap then
     require('packer').sync()

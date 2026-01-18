@@ -6,7 +6,9 @@ if not ok then
 end
 
 configs.setup({
-  ensure_installed = {},
+  ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "java", "python", "javascript", "typescript" },
   highlight = { enable = true },
   indent = { enable = true },
+  incremental_selection = { enable = true },
+  auto_install = true,
 })
