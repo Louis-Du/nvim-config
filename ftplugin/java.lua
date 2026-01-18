@@ -12,6 +12,11 @@ local workspace_path = home .. '/.local/share/nvim/jdtls-workspace'
 local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
 local workspace_dir = workspace_path .. '/' .. project_name
 
+-- Configurar bundles para java-debug
+local bundles = {}
+local java_debug_path = home .. '/dev/java/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar'
+vim.list_extend(bundles, vim.split(vim.fn.glob(java_debug_path, true), '\n'))
+
 local config = {
   cmd = {
     home .. '/.local/bin/jdtls',
@@ -28,7 +33,7 @@ local config = {
   },
 
   init_options = {
-    bundles = {}
+    bundles = bundles
   },
 
   on_attach = function(client, bufnr)

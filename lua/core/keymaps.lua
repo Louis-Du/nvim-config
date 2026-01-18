@@ -77,6 +77,21 @@ map("n", "<S-l>", "<cmd>BufferLineCycleNext<cr>", { desc = "Siguiente buffer" })
 map("n", "<S-h>", "<cmd>BufferLineCyclePrev<cr>", { desc = "Buffer anterior" })
 map("n", "<leader>bd", "<cmd>bdelete<cr>", { desc = "Cerrar buffer" })
 
+-- ============================================================
+-- DAP (Debugging)
+-- ============================================================
+map("n", "<F5>", function() require("dap").continue() end, { desc = "Debug: Iniciar/Continuar" })
+map("n", "<F10>", function() require("dap").step_over() end, { desc = "Debug: Step Over" })
+map("n", "<F11>", function() require("dap").step_into() end, { desc = "Debug: Step Into" })
+map("n", "<F12>", function() require("dap").step_out() end, { desc = "Debug: Step Out" })
+map("n", "<leader>db", function() require("dap").toggle_breakpoint() end, { desc = "Debug: Toggle Breakpoint" })
+map("n", "<leader>dB", function() require("dap").set_breakpoint(vim.fn.input('Condición: ')) end, { desc = "Debug: Breakpoint condicional" })
+map("n", "<leader>dr", function() require("dap").repl.open() end, { desc = "Debug: Abrir REPL" })
+map("n", "<leader>dl", function() require("dap").run_last() end, { desc = "Debug: Run Last" })
+map("n", "<leader>dt", function() require("dap").terminate() end, { desc = "Debug: Terminar" })
+map("n", "<leader>du", function() require("dapui").toggle() end, { desc = "Debug: Toggle UI" })
+map("n", "<leader>dh", function() require("dap.ui.widgets").hover() end, { desc = "Debug: Hover" })
+
 -- Trouble
 map("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", { desc = "Diagnósticos" })
 map("n", "<leader>xw", "<cmd>Trouble workspace_diagnostics toggle<cr>", { desc = "Workspace diagnostics" })
