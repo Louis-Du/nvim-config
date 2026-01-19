@@ -3,8 +3,10 @@ if not ok then return end
 
 wk.setup({
   window = {
-    border = "single",
-    position = "bottom",
+    border = "rounded",
+  },
+  layout = {
+    spacing = 6,
   },
 })
 

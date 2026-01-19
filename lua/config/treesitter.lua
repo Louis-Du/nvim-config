@@ -1,5 +1,5 @@
 -- lua/config/treesitter.lua
-local ok, configs = pcall(require, "nvim-treesitter.config")
+local ok, configs = pcall(require, "nvim-treesitter.configs")
 if not ok then
   vim.notify("treesitter configs not found", vim.log.levels.ERROR)
   return

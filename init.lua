@@ -42,6 +42,10 @@ safe_require("config.luasnip")
 safe_require("config.trouble")
 safe_require("config.whichkey")
 safe_require("config.bufferline")
+safe_require("config.theme")
+safe_require("config.lualine")
+safe_require("config.indent")
+safe_require("config.noice")
 
 
 -- Inicializar DAP
@@ -52,6 +56,7 @@ end
 
 safe_require("config.dap-java")
 
+require("core.diagnostics")
 -- ============================================================
 -- Cargar keymaps DESPUÉS de que los plugins estén inicializados
 -- ============================================================
