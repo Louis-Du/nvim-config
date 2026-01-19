@@ -1,10 +1,11 @@
 # nvim-config
 
-Configuración personalizada de Neovim orientada al desarrollo de software moderno, con soporte completo para LSP (Language Server Protocol), autocompletado inteligente, navegación de archivos y snippets.
+Configuración personalizada de Neovim orientada al desarrollo de software moderno, con soporte completo para LSP (Language Server Protocol), autocompletado inteligente, navegación de archivos, snippets y un dashboard minimalista interactivo.
 
 ## Descripción
 
-Este repositorio contiene una configuración modular y extensible de Neovim construida con Lua y Vim Script. La configuración está diseñada para proporcionar un entorno de desarrollo eficiente con características similares a un IDE moderno, incluyendo:
+Este repositorio contiene una configuración modular y extensible de Neovim construida con Lua. La configuración está diseñada para proporcionar un entorno de desarrollo eficiente con características similares a un IDE moderno, incluyendo:
+- Dashboard interactivo minimalista al iniciar
 
 - Servidor de lenguaje (LSP) para análisis de código en tiempo real
 - Autocompletado inteligente con múltiples fuentes
@@ -89,11 +90,27 @@ Cierra y vuelve a abrir Neovim para que todos los cambios surtan efecto.
 
 La tecla líder está configurada como `<Space>` (barra espaciadora).
 
+#### Dashboard (pantalla de inicio)
+
+Al abrir Neovim sin archivos:
+- `n` - Nuevo archivo
+- `f` - Buscar archivo
+- `r` - Archivos recientes
+- `e` - Abrir explorador
+- `q` - Salir de Neovim
+
 #### Explorador de Archivos (NvimTree)
 
 - `<Space>e` - Abrir/cerrar el explorador de archivos
+- `<Space>o` - Enfocar nvim-tree
 - `<Space>r` - Encontrar el archivo actual en el árbol
 - `<Space>R` - Refrescar el explorador de archivos
+
+#### Buffers (BufferLine)
+
+- `Shift+l` - Siguiente buffer
+- `Shift+h` - Buffer anterior
+- `<Space>bd` - Cerrar buffer actual
 
 #### Búsqueda Fuzzy (Telescope)
 
@@ -102,17 +119,34 @@ La tecla líder está configurada como `<Space>` (barra espaciadora).
 - `<Space>fb` - Listar y cambiar entre buffers abiertos
 - `<Space>fs` - Buscar símbolos en el documento actual
 
+#### Diagnósticos (Trouble)
+
+- `<Space>xx` - Mostrar diagnósticos del documento
+- `<Space>xw` - Diagnósticos del workspace
+- `<Space>xd` - Diagnósticos del documento
+- `<Space>xq` - Quickfix list
+- `<Space>D` - Ver diagnóstico flotante (cursor actual)
+
 #### Depuración (DAP)
 
-- `<Space>dc` - Continuar ejecución / Iniciar depuración
-- `<Space>ds` - Step over (siguiente línea)
-- `<Space>di` - Step into (entrar en función)
-- `<Space>do` - Step out (salir de función)
-- `<Space>db` - Toggle breakpoint (agregar/quitar punto de interrupción)
+- `F5` o `<Space>dc` - Continuar / Iniciar depuración
+- `F10` - Step over (siguiente línea)
+- `F11` - Step into (entrar en función)
+- `F12` - Step out (salir de función)
+- `<Space>db` - Toggle breakpoint
 - `<Space>dB` - Breakpoint condicional
-- `<Space>du` - Toggle DAP UI (mostrar/ocultar interfaz)
+- `<Space>du` - Toggle DAP UI
 - `<Space>dr` - Abrir REPL
-- `<Space>dt` - Terminar sesión de depuración
+- `<Space>dT` - Terminar sesión
+- `<Space>dv` - Alternar vista completa/simple
+
+#### LSP (Language Server)
+
+- `gd` - Ir a definición
+- `gr` - Ver referencias
+- `K` - Mostrar documentación (hover)
+- `<Space>rn` - Renombrar símbolo
+- `<Space>ca` - Acciones de código
 
 #### Navegación y Edición
 
@@ -143,19 +177,48 @@ La tecla líder está configurada como `<Space>` (barra espaciadora).
 ├── init.lua                    # Punto de entrada principal (Lua)
 ├── lua/
 │   ├── plugins.lua            # Definición de plugins con Packer.nvim
+│   ├── core/
+│   │   ├── options.lua        # Opciones básicas de Neovim
+│   │   ├── keymaps.lua        # Mapeos de teclas globales
+│   │   ├── diagnostics.lua    # Configuración de diagnósticos
+│   │   ├── dashboard.lua      # Dashboard interactivo minimalista
+│   │   └── mensajes.lua       # Sistema de mensajes
 │   └── config/
-│       ├── cmp.lua            # Configuración de autocompletado
-│       ├── dap.lua            # Configuración de DAP (debugger)
 │       ├── lsp.lua            # Configuración de LSP
-│       ├── treesitter.lua     # Configuración de Treesitter
-│       ├── nvimtree.lua       # Configuración del explorador de archivos
-│       ├── telescope.lua      # Configuración de búsqueda fuzzy
-│       ├── luasnip.lua        # Configuración de snippets
+│       ├── cmp.lua            # Autocompletado inteligente
+│       ├── treesitter.lua     # Resaltado de sintaxis
+│       ├── nvimtree.lua       # Explorador de archivos
+│       ├── telescope.lua      # Búsqueda fuzzy
+│       ├── luasnip.lua        # Snippets
+│       ├── dap.lua            # Depurador (DAP)
+│       ├── dap-java.lua       # Configuración DAP para Java
 │       ├── autopairs.lua      # Cierre automático de pares
 │       ├── comment.lua        # Comentarios inteligentes
 │       ├── whichkey.lua       # Menú de atajos
+│       ├── bufferline.lua     # Línea de buffers
+│       ├── lualine.lua        # Barra de estado
+│       ├── trouble.lua        # Panel de diagnósticos
+│       ├── indent.lua         # Guías de indentación
+│       ├── noice.lua          # UI mejorada
+│       ├── theme.lua          # Tema de color
 │       └── format.lua         # Formateo automático
+├── ftplugin/
+│   └── java.lua               # Configuración específica para Java
 └── snippets/                  # Directorio para snippets personalizados
+	└── java.lua               # Snippets para Java
+### Dashboard Interactivo
+
+Al abrir Neovim sin archivos, aparece un **dashboard minimalista** con:
+
+**Acciones rápidas:**
+- `n` → Nuevo archivo
+- `f` → Buscar archivo
+- `r` → Archivos recientes
+- `e` → Explorador de archivos
+- `q` → Salir
+
+El dashboard desaparece automáticamente al comenzar a trabajar.
+
 ```
 
 ## Tecnologías y Herramientas

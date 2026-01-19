@@ -1,0 +1,2 @@
+-- Este archivo fue removido para evitar duplicación con welcome.lua
+-- Los mensajes de bienvenida ahora se manejan solo en core/welcome.lua

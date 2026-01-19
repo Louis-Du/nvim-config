@@ -2,17 +2,12 @@
 -- init.lua - Configuración principal de Neovim
 -- ============================================================
 
-require("core.options") 
-
--- Cargar opciones básicas
+-- Definir leader antes de cargar plugins
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
--- Opciones básicas
-vim.opt.mouse = "a"
-vim.opt.clipboard = "unnamedplus"
-vim.opt.termguicolors = true
-vim.cmd("syntax enable")
+-- Cargar opciones básicas
+require("core.options")
 
 -- ============================================================
 -- Cargar Packer y plugins
@@ -57,22 +52,6 @@ end
 safe_require("config.dap-java")
 
 require("core.diagnostics")
--- ============================================================
--- Cargar keymaps DESPUÉS de que los plugins estén inicializados
--- ============================================================
 require("core.keymaps")
+require("core.dashboard")
 
--- ============================================================
--- Portapapeles y seleccionar todo - DEPRECATED
--- (Estos atajos pueden causar conflictos. Considera usar los
---  atajos nativos de Neovim: y para copiar, d para cortar, etc.)
--- ============================================================
--- vim.keymap.set("v", "<C-c>", '"+y', { silent = true, desc = "Copy to clipboard" })
--- vim.keymap.set("n", "<C-c>", '"+yy', { silent = true, desc = "Copy line to clipboard" })
--- vim.keymap.set("v", "<C-x>", '"+d', { silent = true, desc = "Cut to clipboard" })
--- vim.keymap.set("n", "<C-x>", '"+dd', { silent = true, desc = "Cut line to clipboard" })
--- vim.keymap.set("n", "<C-p>", '"+p', { silent = true, desc = "Paste from clipboard" })
--- vim.keymap.set("v", "<C-p>", '"+p', { silent = true, desc = "Paste from clipboard" })
--- vim.keymap.set("n", "<C-a>", "ggVG", { silent = true, desc = "Select all" })
-
--- LSP keymaps están definidos en config/lsp.lua

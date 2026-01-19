@@ -94,10 +94,5 @@ map("n", "<leader>dh", function() require("dap.ui.widgets").hover() end, { desc 
 map("n", "<leader>dc", function() require("dap").continue() end, { desc = "Debug: Continuar" })
 map("n", "<leader>dv", function() require("config.dap").toggle_full_view() end, { desc = "Debug: Vista completa/simple" })
 
--- Diagnostico no invasivo
-vim.keymap.set(
-  "n",
-  "<leader>e",
-  vim.diagnostic.open_float,
-  { desc = "Ver diagnóstico" }
-)
+-- Diagnóstico flotante (cambié el atajo para evitar conflicto con nvim-tree)
+map("n", "<leader>D", vim.diagnostic.open_float, { desc = "Ver diagnóstico" })

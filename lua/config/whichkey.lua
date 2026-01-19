@@ -29,6 +29,7 @@ wk.register({
     d = "Documento",
     q = "Quickfix",
   },
+  D = "Ver diagnóstico flotante",
   d = {
     name = "Debug",
     b = "Toggle Breakpoint",
