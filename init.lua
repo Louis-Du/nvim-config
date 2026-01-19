@@ -58,14 +58,16 @@ safe_require("config.dap-java")
 require("core.keymaps")
 
 -- ============================================================
--- Portapapeles
+-- Portapapeles y seleccionar todo - DEPRECATED
+-- (Estos atajos pueden causar conflictos. Considera usar los
+--  atajos nativos de Neovim: y para copiar, d para cortar, etc.)
 -- ============================================================
-vim.keymap.set("v", "<C-c>", '"+y', { silent = true, desc = "Copy to clipboard" })
-vim.keymap.set("n", "<C-c>", '"+yy', { silent = true, desc = "Copy line to clipboard" })
-vim.keymap.set("v", "<C-x>", '"+d', { silent = true, desc = "Cut to clipboard" })
-vim.keymap.set("n", "<C-x>", '"+dd', { silent = true, desc = "Cut line to clipboard" })
-vim.keymap.set("n", "<C-p>", '"+p', { silent = true, desc = "Paste from clipboard" })
-vim.keymap.set("v", "<C-p>", '"+p', { silent = true, desc = "Paste from clipboard" })
-vim.keymap.set("n", "<C-a>", "ggVG", { silent = true, desc = "Select all" })
+-- vim.keymap.set("v", "<C-c>", '"+y', { silent = true, desc = "Copy to clipboard" })
+-- vim.keymap.set("n", "<C-c>", '"+yy', { silent = true, desc = "Copy line to clipboard" })
+-- vim.keymap.set("v", "<C-x>", '"+d', { silent = true, desc = "Cut to clipboard" })
+-- vim.keymap.set("n", "<C-x>", '"+dd', { silent = true, desc = "Cut line to clipboard" })
+-- vim.keymap.set("n", "<C-p>", '"+p', { silent = true, desc = "Paste from clipboard" })
+-- vim.keymap.set("v", "<C-p>", '"+p', { silent = true, desc = "Paste from clipboard" })
+-- vim.keymap.set("n", "<C-a>", "ggVG", { silent = true, desc = "Select all" })
 
 -- LSP keymaps están definidos en config/lsp.lua

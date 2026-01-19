@@ -71,13 +71,14 @@ vim.api.nvim_create_autocmd("FileType", {
       },
       on_attach = function(client, bufnr)
         if ok_jdtls then
-          -- Configurar DAP con modo de consola integratedTerminal
-          jdtls.setup_dap({ 
+          -- Configurar DAP para usar consola interna (salida en panel Console)
+          jdtls.setup_dap({
             hotcodereplace = 'auto',
             config_overrides = {
-              console = 'integratedTerminal'
+              console = 'internalConsole'
             }
           })
+          -- Nota: los keymaps de pruebas JDTLS viven en ftplugin/java.lua
         end
       end,
     }

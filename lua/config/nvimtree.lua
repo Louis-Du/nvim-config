@@ -1,15 +1,6 @@
 local ok, nvim_tree = pcall(require, "nvim-tree")
 if not ok then return end
 
-function _G.safe_toggle()
-  local api = require("nvim-tree.api")
-  if api.tree.is_visible() then
-    api.tree.close()
-  else
-    api.tree.open()
-  end
-end
-
 nvim_tree.setup({
   on_attach = function(bufnr)
     local api = require("nvim-tree.api")

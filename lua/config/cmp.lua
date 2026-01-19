@@ -17,6 +17,9 @@ if lspkind_ok then
 end
 
 cmp.setup({
+  completion = {
+    completeopt = 'menu,menuone,noselect',
+  },
   snippet = {
     expand = function(args)
       luasnip.lsp_expand(args.body)

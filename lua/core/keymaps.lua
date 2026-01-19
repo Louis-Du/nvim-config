@@ -88,7 +88,7 @@ map("n", "<leader>db", function() require("dap").toggle_breakpoint() end, { desc
 map("n", "<leader>dB", function() require("dap").set_breakpoint(vim.fn.input('Condición: ')) end, { desc = "Debug: Breakpoint condicional" })
 map("n", "<leader>dr", function() require("dap").repl.open() end, { desc = "Debug: Abrir REPL" })
 map("n", "<leader>dl", function() require("dap").run_last() end, { desc = "Debug: Run Last" })
-map("n", "<leader>dt", function() require("dap").terminate() end, { desc = "Debug: Terminar" })
+map("n", "<leader>dT", function() require("dap").terminate() end, { desc = "Debug: Terminar" })
 map("n", "<leader>du", function() require("dapui").toggle() end, { desc = "Debug: Toggle UI" })
 map("n", "<leader>dh", function() require("dap.ui.widgets").hover() end, { desc = "Debug: Hover" })
 map("n", "<leader>dc", function() require("dap").continue() end, { desc = "Debug: Continuar" })

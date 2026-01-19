@@ -4,10 +4,13 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     -- Formatea solo si hay LSP activo para el buffer
     local clients = vim.lsp.get_active_clients({ bufnr = 0 })
     if #clients > 0 then
-      vim.lsp.buf.format({
+      local ok, err = pcall(vim.lsp.buf.format, {
         async = false,
-        timeout_ms = 2000,
+        timeout_ms = 5000,
       })
+      if not ok then
+        vim.notify("Format error: " .. tostring(err), vim.log.levels.WARN)
+      end
     end
   end,
 })

@@ -19,25 +19,28 @@ if not dapui_ok then
   return
 end
 
--- 🔥 CONFIGURAR DAP PARA USAR CONSOLA INTERNA
+-- 🔥 CONFIGURAR DAP PARA USAR CONSOLA DE DAP-UI
 dap.configurations.java = {
   {
     type = 'java',
     request = 'launch',
     name = "Launch Java Program",
-    console = 'internalConsole',  -- Usar consola interna de DAP
+    console = 'console',  -- Usar consola de DAP-UI (panel inferior)
   },
 }
 
--- UI automática
+-- UI automática con notificaciones
 dap.listeners.after.event_initialized["dapui_java"] = function()
   dapui.open()
+  vim.notify("✓ Debugger started", vim.log.levels.INFO)
 end
 
 dap.listeners.before.event_terminated["dapui_java"] = function()
   dapui.close()
+  vim.notify("✗ Debugger terminated", vim.log.levels.WARN)
 end
 
 dap.listeners.before.event_exited["dapui_java"] = function()
   dapui.close()
+  vim.notify("✗ Debugger exited", vim.log.levels.WARN)
 end
