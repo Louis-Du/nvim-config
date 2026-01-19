@@ -57,6 +57,29 @@ vim.api.nvim_create_autocmd("FileType", {
       cmd = { jdtls_cmd, "-data", workspace_dir },
       root_dir = root_dir,
       capabilities = capabilities,
+      init_options = {
+        bundles = {},
+      },
+      settings = {
+        java = {
+          signatureHelp = { enabled = true },
+          contentProvider = { preferred = 'fernflower' },
+          configuration = {
+            runtimes = {}
+          }
+        }
+      },
+      on_attach = function(client, bufnr)
+        if ok_jdtls then
+          -- Configurar DAP con modo de consola integratedTerminal
+          jdtls.setup_dap({ 
+            hotcodereplace = 'auto',
+            config_overrides = {
+              console = 'integratedTerminal'
+            }
+          })
+        end
+      end,
     }
 
     if ok_jdtls then

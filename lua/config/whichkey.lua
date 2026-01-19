@@ -8,13 +8,6 @@ wk.setup({
   },
 })
 
-x = {
-  name = "Diagnósticos",
-  x = "Todos",
-  w = "Workspace",
-  d = "Documento",
-  q = "Quickfix",
-},
 wk.register({
   f = {
     name = "Buscar",
@@ -26,6 +19,25 @@ wk.register({
   b = {
     name = "Buffers",
     d = "Cerrar buffer",
+  },
+  x = {
+    name = "Diagnósticos",
+    x = "Todos",
+    w = "Workspace",
+    d = "Documento",
+    q = "Quickfix",
+  },
+  d = {
+    name = "Debug",
+    b = "Toggle Breakpoint",
+    B = "Breakpoint condicional",
+    r = "Abrir REPL",
+    l = "Run Last",
+    t = "Terminar",
+    u = "Toggle UI",
+    h = "Hover",
+    c = "Continuar",
+    v = "Vista completa/simple",
   },
   e = "Explorador archivos",
   r = "Encontrar archivo",

@@ -21,7 +21,7 @@ function M.setup()
     virtual_text.setup()
   end
 
-  -- Configurar DAP-UI
+  -- Configurar DAP-UI con layouts minimalistas y completos
   dapui.setup({
     icons = { expanded = "▾", collapsed = "▸", current_frame = "▸" },
     mappings = {
@@ -33,6 +33,15 @@ function M.setup()
       toggle = "t",
     },
     layouts = {
+      -- Layout 1: Vista MINIMALISTA (solo console)
+      {
+        elements = {
+          { id = "console", size = 1.0 },
+        },
+        size = 0.25,
+        position = "bottom",
+      },
+      -- Layout 2: Vista COMPLETA (todos los paneles)
       {
         elements = {
           { id = "scopes", size = 0.25 },
@@ -42,14 +51,6 @@ function M.setup()
         },
         size = 40,
         position = "left",
-      },
-      {
-        elements = {
-          "repl",
-          "console",
-        },
-        size = 0.25,
-        position = "bottom",
       },
     },
     floating = {
@@ -67,17 +68,38 @@ function M.setup()
     }
   })
 
-  -- Abrir/cerrar DAP-UI automáticamente
+  -- Variable para trackear el estado de vista
+  M.full_view = false
+
+  -- Función para alternar entre vista simple y completa
+  M.toggle_full_view = function()
+    if M.full_view then
+      -- Cerrar panel izquierdo, dejar solo console
+      dapui.close(2)
+      M.full_view = false
+      vim.notify("Debug: Vista minimalista", vim.log.levels.INFO)
+    else
+      -- Abrir todos los paneles
+      dapui.open()
+      M.full_view = true
+      vim.notify("Debug: Vista completa", vim.log.levels.INFO)
+    end
+  end
+
+  -- Abrir SOLO console al iniciar (vista minimalista)
   dap.listeners.after.event_initialized["dapui_auto_open"] = function()
-    dapui.open()
+    dapui.open(1)  -- Solo abrir layout 1 (console)
+    M.full_view = false
   end
 
   dap.listeners.before.event_terminated["dapui_auto_close_terminate"] = function()
     dapui.close()
+    M.full_view = false
   end
 
   dap.listeners.before.event_exited["dapui_auto_close_exit"] = function()
     dapui.close()
+    M.full_view = false
   end
 
   -- Signos para breakpoints (con fallback ASCII)

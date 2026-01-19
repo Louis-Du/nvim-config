@@ -1,48 +1,16 @@
 -- ftplugin/java.lua
--- Configuración de nvim-jdtls para Java
+-- Configuración adicional específica para archivos Java
+-- La inicialización de JDTLS se maneja en lua/config/lsp.lua
 
-local status_ok, jdtls = pcall(require, 'jdtls')
-if not status_ok then
+local jdtls_ok, jdtls = pcall(require, 'jdtls')
+if not jdtls_ok then
+  vim.notify("jdtls not found", vim.log.levels.WARN)
   return
 end
 
-local home = os.getenv('HOME')
-local jdtls_path = home .. '/.local/share/eclipse'
-local workspace_path = home .. '/.local/share/nvim/jdtls-workspace'
-local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
-local workspace_dir = workspace_path .. '/' .. project_name
-
--- Configurar bundles para java-debug
-local bundles = {}
-local java_debug_path = home .. '/dev/java/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar'
-vim.list_extend(bundles, vim.split(vim.fn.glob(java_debug_path, true), '\n'))
-
-local config = {
-  cmd = {
-    home .. '/.local/bin/jdtls',
-    '-data', workspace_dir,
-  },
-
-  root_dir = require('jdtls.setup').find_root({'.git', 'mvnw', 'gradlew', 'pom.xml', 'build.gradle'}),
-
-  settings = {
-    java = {
-      signatureHelp = { enabled = true },
-      contentProvider = { preferred = 'fernflower' },
-    }
-  },
-
-  init_options = {
-    bundles = bundles
-  },
-
-  on_attach = function(client, bufnr)
-    require('jdtls').setup_dap({ hotcodereplace = 'auto' })
-    
-    local opts = { noremap = true, silent = true, buffer = bufnr }
-    vim.keymap.set('n', '<leader>dn', "<Cmd>lua require'jdtls'.test_nearest_method()<CR>", opts)
-    vim.keymap.set('n', '<leader>dt', "<Cmd>lua require'jdtls'.test_class()<CR>", opts)
-  end,
-}
-
-jdtls.start_or_attach(config)
+-- Solo definir keymaps de prueba unitaria si JDTLS está conectado
+local opts = { noremap = true, silent = true, buffer = 0 }
+if jdtls then
+  vim.keymap.set('n', '<leader>dn', function() jdtls.test_nearest_method() end, opts)
+  vim.keymap.set('n', '<leader>dt', function() jdtls.test_class() end, opts)
+end

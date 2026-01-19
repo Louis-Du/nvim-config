@@ -91,9 +91,7 @@ map("n", "<leader>dl", function() require("dap").run_last() end, { desc = "Debug
 map("n", "<leader>dt", function() require("dap").terminate() end, { desc = "Debug: Terminar" })
 map("n", "<leader>du", function() require("dapui").toggle() end, { desc = "Debug: Toggle UI" })
 map("n", "<leader>dh", function() require("dap.ui.widgets").hover() end, { desc = "Debug: Hover" })
+map("n", "<leader>dc", function() require("dap").continue() end, { desc = "Debug: Continuar" })
+map("n", "<leader>dv", function() require("config.dap").toggle_full_view() end, { desc = "Debug: Vista completa/simple" })
 
--- Trouble
-map("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", { desc = "Diagnósticos" })
-map("n", "<leader>xw", "<cmd>Trouble workspace_diagnostics toggle<cr>", { desc = "Workspace diagnostics" })
-map("n", "<leader>xd", "<cmd>Trouble document_diagnostics toggle<cr>", { desc = "Documento diagnostics" })
-map("n", "<leader>xq", "<cmd>Trouble quickfix toggle<cr>", { desc = "Quickfix" })
+

@@ -5,6 +5,17 @@ if not cmp_ok then return end
 local luasnip_ok, luasnip = pcall(require, "luasnip")
 if not luasnip_ok then return end
 
+local formatting = {}
+if lspkind_ok then
+  formatting = {
+    format = lspkind.cmp_format({
+      mode = 'symbol_text',
+      maxwidth = 50,
+      ellipsis_char = '…',
+    })
+  }
+end
+
 cmp.setup({
   snippet = {
     expand = function(args)
@@ -24,6 +35,8 @@ cmp.setup({
     { name = "buffer" },
     { name = "path" },
   },
+
+  formatting = formatting,
 })
 
 -- Autocompletado para :
@@ -72,12 +85,6 @@ cmp.setup.cmdline(':', {
     { name = 'cmdline' }
   },
 
-  formatting = lspkind_ok and {
-    format = lspkind.cmp_format({
-      mode = 'symbol_text',
-      maxwidth = 50,
-      ellipsis_char = '…',
-    }),
-  } or {},
+  formatting = formatting,
 })
 

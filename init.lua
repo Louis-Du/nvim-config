@@ -68,11 +68,4 @@ vim.keymap.set("n", "<C-p>", '"+p', { silent = true, desc = "Paste from clipboar
 vim.keymap.set("v", "<C-p>", '"+p', { silent = true, desc = "Paste from clipboard" })
 vim.keymap.set("n", "<C-a>", "ggVG", { silent = true, desc = "Select all" })
 
--- ============================================================
--- LSP keymaps
--- ============================================================
-vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go to definition" })
-vim.keymap.set("n", "gr", vim.lsp.buf.references, { desc = "Go to references" })
-vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover documentation" })
-vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename symbol" })
-vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
+-- LSP keymaps están definidos en config/lsp.lua

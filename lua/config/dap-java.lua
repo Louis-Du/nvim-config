@@ -19,9 +19,15 @@ if not dapui_ok then
   return
 end
 
--- 🔥 ESTA LÍNEA ES LA CLAVE
-jdtls.setup_dap({ hotcodereplace = "auto" })
-jdtls.setup.add_commands()
+-- 🔥 CONFIGURAR DAP PARA USAR CONSOLA INTERNA
+dap.configurations.java = {
+  {
+    type = 'java',
+    request = 'launch',
+    name = "Launch Java Program",
+    console = 'internalConsole',  -- Usar consola interna de DAP
+  },
+}
 
 -- UI automática
 dap.listeners.after.event_initialized["dapui_java"] = function()
