@@ -6,4 +6,4 @@ require("trouble").setup({
   auto_close = true,
 })
 
--- Keymaps para Trouble están definidos en core/keymaps.lua
+-- Keymaps para Trouble definidos en core/keymaps.lua

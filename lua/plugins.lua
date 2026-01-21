@@ -98,6 +98,10 @@ return require('packer').startup(function(use)
   "folke/trouble.nvim",
   requires = "nvim-tree/nvim-web-devicons",
 }
+
+  -- Smear cursor effect
+  use 'sphamba/smear-cursor.nvim'
+
   -- Sincronizar plugins si es primera instalación
   if packer_bootstrap then
     require('packer').sync()

@@ -4,4 +4,3 @@ vim.diagnostic.config({
   signs = true,
   underline = true,
 })
-

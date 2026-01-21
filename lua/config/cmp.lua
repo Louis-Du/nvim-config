@@ -90,4 +90,3 @@ cmp.setup.cmdline(':', {
 
   formatting = formatting,
 })
-

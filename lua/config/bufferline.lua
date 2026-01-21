@@ -10,6 +10,3 @@ bufferline.setup({
     show_close_icon = false,
   },
 })
-
-
-

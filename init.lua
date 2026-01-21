@@ -41,6 +41,7 @@ safe_require("config.theme")
 safe_require("config.lualine")
 safe_require("config.indent")
 safe_require("config.noice")
+safe_require("config.smear_cursor")
 
 
 -- Inicializar DAP
@@ -54,4 +55,3 @@ safe_require("config.dap-java")
 require("core.diagnostics")
 require("core.keymaps")
 require("core.dashboard")
-
