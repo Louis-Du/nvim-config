@@ -102,6 +102,9 @@ return require('packer').startup(function(use)
   -- Smear cursor effect
   use 'sphamba/smear-cursor.nvim'
 
+  -- Terminal integrada
+  use 'akinsho/toggleterm.nvim'
+
   -- Sincronizar plugins si es primera instalación
   if packer_bootstrap then
     require('packer').sync()

@@ -42,6 +42,7 @@ safe_require("config.lualine")
 safe_require("config.indent")
 safe_require("config.noice")
 safe_require("config.smear_cursor")
+safe_require("config.toggleterm")
 
 
 -- Inicializar DAP
