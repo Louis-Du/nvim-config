@@ -95,18 +95,16 @@ map("n", "<leader>dc", function() require("dap").continue() end, { desc = "Debug
 map("n", "<leader>dv", function() require("config.dap").toggle_full_view() end, { desc = "Debug: Vista completa/simple" })
 
 -- Diagnóstico flotante (cambié el atajo para evitar conflicto con nvim-tree)
-map("n", "<leader>D", vim.diagnostic.open_float, { desc = "Ver diagnóstico" })
+map("n", "<leader>.D", vim.diagnostic.open_float, { desc = "diag float" })
 
 -- ===========================================================
 -- Reader
 -- ===========================================================
-vim.keymap.set("n", "<leader>rr", function()
-  require("reader").open()
-end, { desc = "Modo lectura" })
+map("n", "<leader>.r", "<cmd>Reader<CR>", { desc = "reader" })
 
 -- ===========================================================
 -- Copiar todo
 -- ===========================================================
-vim.keymap.set("n", "<leader>y", function()
+map("n", "<leader>.y", function()
   vim.cmd("%y+")
-end, { desc = "Copiar todo el archivo al portapapeles" })
+end, { desc = "copy file" })
