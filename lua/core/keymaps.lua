@@ -96,3 +96,10 @@ map("n", "<leader>dv", function() require("config.dap").toggle_full_view() end, 
 
 -- Diagnóstico flotante (cambié el atajo para evitar conflicto con nvim-tree)
 map("n", "<leader>D", vim.diagnostic.open_float, { desc = "Ver diagnóstico" })
+
+-- ===========================================================
+-- Reader
+-- ===========================================================
+vim.keymap.set("n", "<leader>rr", function()
+  require("reader").open()
+end, { desc = "Modo lectura" })

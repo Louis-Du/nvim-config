@@ -105,6 +105,9 @@ return require('packer').startup(function(use)
   -- Terminal integrada
   use 'akinsho/toggleterm.nvim'
 
+  -- Reader
+  use "Sang-it/reader.nvim"
+
   -- Sincronizar plugins si es primera instalación
   if packer_bootstrap then
     require('packer').sync()
