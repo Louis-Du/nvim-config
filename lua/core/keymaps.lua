@@ -103,3 +103,10 @@ map("n", "<leader>D", vim.diagnostic.open_float, { desc = "Ver diagnóstico" })
 vim.keymap.set("n", "<leader>rr", function()
   require("reader").open()
 end, { desc = "Modo lectura" })
+
+-- ===========================================================
+-- Copiar todo
+-- ===========================================================
+vim.keymap.set("n", "<leader>y", function()
+  vim.cmd("%y+")
+end, { desc = "Copiar todo el archivo al portapapeles" })
