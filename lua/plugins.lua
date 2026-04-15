@@ -108,6 +108,14 @@ return require('packer').startup(function(use)
   -- Reader
   use "Sang-it/reader.nvim"
 
+  -- Otros plugins visuales y de productividad
+  use 'tzachar/local-highlight.nvim'
+  use 'echasnovski/mini.animate'
+  use({ 'iamcco/markdown-preview.nvim', run = 'cd app && npm install', ft = { 'markdown' } })
+  use 'phaazon/hop.nvim'
+  use 'sindrets/diffview.nvim'
+  use 'HiPhish/rainbow-delimiters.nvim'
+
   -- Sincronizar plugins si es primera instalación
   if packer_bootstrap then
     require('packer').sync()

@@ -43,7 +43,14 @@ safe_require("config.indent")
 safe_require("config.noice")
 safe_require("config.smear_cursor")
 safe_require("config.toggleterm")
+
 safe_require("config.reader")
+safe_require("config.localhighlight")
+safe_require("config.animate")
+safe_require("config.markdownpreview")
+safe_require("config.hop")
+safe_require("config.diffview")
+safe_require("config.rainbow")
 
 -- Inicializar DAP
 local dap_ok = safe_require("config.dap")
