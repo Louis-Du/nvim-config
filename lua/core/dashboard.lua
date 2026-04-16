@@ -36,17 +36,17 @@ end
 function M.setup()
   vim.api.nvim_create_autocmd("VimEnter", {
     callback = function()
-      -- Solo mostrar si no hay archivos al iniciar
+      print("DASHBOARD AUTOCMD")
+      -- Mostrar dashboard solo si no hay archivos abiertos
       if vim.fn.argc() > 0 then
         return
       end
 
+      local buf = vim.api.nvim_get_current_buf()
       local msg = messages[math.random(#messages)]
 
-      vim.cmd("enew")
-      local buf = vim.api.nvim_get_current_buf()
-
-      -- Configurar buffer como dashboard
+      -- Limpiar el buffer actual y configurarlo como dashboard
+      vim.api.nvim_buf_set_lines(buf, 0, -1, false, {})
       vim.bo[buf].buftype = "nofile"
       vim.bo[buf].bufhidden = "wipe"
       vim.bo[buf].swapfile = false
