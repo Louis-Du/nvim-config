@@ -23,7 +23,6 @@ end
 
 -- Dashboard minimalista e interactivo
 local M = {}
-
 local messages = {
   "𝙷𝚘𝚢 𝚜𝚊𝚋𝚎𝚜 𝚖á𝚜 𝚚𝚞𝚎 𝚌𝚞𝚊𝚗𝚍𝚘 𝚎𝚖𝚙𝚎𝚣𝚊𝚜𝚝𝚎.",
   "𝙴𝚕 𝚌ó𝚍𝚒𝚐𝚘 𝚝𝚊𝚖𝚋𝚒é𝚗 𝚎𝚜 𝚞𝚗𝚊 𝚏𝚘𝚛𝚖𝚊 𝚍𝚎 𝚙𝚎𝚗𝚜𝚊𝚛.",
@@ -31,8 +30,18 @@ local messages = {
   "𝚂𝚒 𝚙𝚞𝚎𝚍𝚎𝚜 𝚒𝚖𝚊𝚐𝚒𝚗𝚊𝚛𝚕𝚘, 𝚙𝚞𝚎𝚍𝚎𝚜 𝚙𝚛𝚘𝚐𝚛𝚊𝚖𝚊𝚛𝚕𝚘.",
   "𝙻𝚊 𝚌𝚘𝚗𝚜𝚝𝚊𝚗𝚌𝚒𝚊 𝚟𝚎𝚗𝚌𝚎 𝚊𝚕 𝚝𝚊𝚕𝚎𝚗𝚝𝚘 𝚍𝚒𝚜𝚝𝚛á𝚒𝚍𝚘.",
   "𝙴𝚕 𝚎𝚛𝚛𝚘𝚛 𝚎𝚜 𝚙𝚊𝚛𝚝𝚎 𝚍𝚎𝚕 𝚌𝚊𝚖𝚒𝚗𝚘, 𝚗𝚘 𝚍𝚎𝚕 𝚏𝚒𝚗𝚊𝚕.",
-  "𝙴𝚜𝚌𝚛𝚒𝚋𝚎 𝚌ó𝚍𝚒𝚐𝚘 𝚌𝚘𝚖𝚘 𝚚𝚞𝚒𝚎𝚗 𝚍𝚎𝚓𝚊 𝚑𝚞𝚎𝚕𝚕𝚊.",
   "𝙻𝚘 𝚍𝚒𝚏í𝚌𝚒𝚕 𝚍𝚎 𝚑𝚘𝚢 𝚜𝚎𝚛á 𝚛𝚞𝚝𝚒𝚗𝚊 𝚖𝚊ñ𝚊𝚗𝚊.",
+  "Controlar la complejidad es la esencia de la programación. — Brian Kernighan",
+  "Primero, resuelve el problema. Luego, escribe el código. — John Johnson",
+  "No soy un gran programador; solo soy un buen programador con grandes hábitos. — Kent Beck",
+  "La única forma de aprender un nuevo lenguaje de programación es escribiendo programas en él. — Dennis Ritchie (Creador de C)",
+  "No te preocupes si no funciona bien. Si todo funcionara, no tendrías trabajo. — Ley de Mosher",
+  "La mejor manera de predecir el futuro es inventarlo. — Alan Kay.",
+  "No te detengas cuando estés cansado, detente cuando hayas terminado de refactorizar. — Adaptación de la cultura Clean Code.",
+  "Escribe siempre tu código como si la persona que lo fuera a mantener fuera un psicópata violento que sabe dónde vives. — John Woods.",
+  "La duda es el principio de la sabiduría. — Aristóteles",
+  "La felicidad de tu vida depende de la calidad de tus pensamientos. — Marco Aurelio.",
+  "El arte de programar es el arte de organizar la complejidad, de dominar la multitud y evitar su caos bastardo de la forma más eficaz posible.- Edsger Wybe Dijkstra."
 }
 
 math.randomseed(os.time())
@@ -103,7 +112,7 @@ function M.setup()
       -- Columna izquierda: bloque de commits (diseño limpio)
       local commits = get_git_commits()
       local left = {}
-      table.insert(left, " ╭─────────────────────  Últimos commits ─────────────────────╮ ")
+      table.insert(left, " ╭────────────────────  Últimos commits ─────────────────────╮ ")
       if #commits > 0 then
         for _, c in ipairs(commits) do
           local hash, msg = c:match("%s*([a-f0-9]+)%s+(.*)")
