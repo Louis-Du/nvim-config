@@ -1,3 +1,26 @@
+local function strlen(s)
+  return vim.fn.strdisplaywidth(s)
+end
+local function get_git_commits()
+  -- Verifica si es repositorio git
+  if vim.fn.isdirectory(".git") == 0 then
+    return {}
+  end
+
+  local handle = io.popen("git log --oneline -n 5 2>/dev/null")
+  if not handle then return {} end
+
+  local result = handle:read("*a")
+  handle:close()
+
+  local lines = {}
+  for line in result:gmatch("[^\r\n]+") do
+    table.insert(lines, "  " .. line)
+  end
+
+  return lines
+end
+
 -- Dashboard minimalista e interactivo
 local M = {}
 
@@ -55,6 +78,10 @@ function M.setup()
 
       -- ASCII Art
       local ascii_art = {
+        "                                       ",
+        "                                       ",
+        "                                       ",
+        "                                       ",
         "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
         "⠀⠀⠀⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠳⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
         "⠀⠀⠀⠀⠀⠀⣀⡴⢧⣀⠀⠀⣀⣠⠤⠤⠤⠤⣄⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
@@ -72,24 +99,92 @@ function M.setup()
 
       -- Contenido del dashboard
       local lines = {}
-      
-      -- Agregar ASCII Art
-      for _, line in ipairs(ascii_art) do
-        table.insert(lines, line)
-      end
-      
-      -- Agregar mensaje y opciones
-      table.insert(lines, "")
-      table.insert(lines, msg)
-      table.insert(lines, "")
-      table.insert(lines, "  [n]  Nuevo archivo")
-      table.insert(lines, "  [f]  Buscar archivo")
-      table.insert(lines, "  [r]  Recientes")
-      table.insert(lines, "  [e]  Explorador")
-      table.insert(lines, "  [q]  Salir")
-      table.insert(lines, "")
 
-      lines = center_text(lines)
+      -- Columna izquierda: bloque de commits (diseño limpio)
+      local commits = get_git_commits()
+      local left = {}
+      table.insert(left, " ╭─────────────────────  Últimos commits ─────────────────────╮ ")
+      if #commits > 0 then
+        for _, c in ipairs(commits) do
+          local hash, msg = c:match("%s*([a-f0-9]+)%s+(.*)")
+          if hash and msg then
+            msg = msg:gsub("%s+$", "")
+            if strlen(msg) > 50 then
+              msg = msg:sub(1, 47) .. "..."
+            end
+            table.insert(left, string.format("    %-8s %s", hash, msg))
+          else
+            table.insert(left, "    " .. c)
+          end
+        end
+      else
+        table.insert(left, "    No hay commits recientes.")
+      end
+      table.insert(left, " ╰─────────────────────────────────────────────────────────────╯ ")
+
+
+      -- Bloque central: mensaje, arte y opciones, todos alineados juntos
+      local center_block = {}
+      table.insert(center_block, "")
+      table.insert(center_block, msg)
+      table.insert(center_block, "")
+      for _, line in ipairs(ascii_art) do
+        table.insert(center_block, line)
+      end
+      local opts = {
+        "",
+        "[n]  Nuevo archivo",
+        "[f]  Buscar archivo",
+        "[r]  Recientes",
+        "[e]  Explorador",
+        "[q]  Salir",
+        ""
+      }
+      for _, line in ipairs(opts) do
+        table.insert(center_block, line)
+      end
+
+      -- Centrar el bloque central completo respecto a la zona derecha de la pantalla
+      local width = vim.api.nvim_get_option("columns")
+
+      -- ancho del bloque izquierdo (unicode-aware)
+      local left_width = 0
+      for _, line in ipairs(left) do
+        left_width = math.max(left_width, strlen(line))
+      end
+
+      local gap = 0 -- espacio fijo entre columnas
+
+      -- ancho del bloque central (unicode-aware)
+      local center_width = 0
+      for _, line in ipairs(center_block) do
+        center_width = math.max(center_width, strlen(line))
+      end
+
+      -- espacio disponible a la derecha
+      local available = width - left_width - gap
+
+      -- centrar dentro de ese espacio
+      local padding = math.max(0, math.floor((available - center_width) / 2))
+
+      for i, line in ipairs(center_block) do
+        if i == 2 then -- Solo la frase
+          local frase_padding = math.max(0, left_width + gap + padding - 70)
+          center_block[i] = string.rep(" ", frase_padding) .. line
+        else
+          center_block[i] = string.rep(" ", left_width + gap + padding) .. line
+        end
+      end
+
+      -- Unir ambas columnas, alineando arriba
+      local total_lines = math.max(#left, #center_block)
+      local lines = {}
+      for i = 1, total_lines do
+        local l = left[i] or ""
+        local c = center_block[i] or ""
+        table.insert(lines, l .. c)
+      end
+
       vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
       vim.bo[buf].modifiable = false
 
