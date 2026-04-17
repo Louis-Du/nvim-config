@@ -1,0 +1,9 @@
+require("trouble").setup({
+  position = "bottom",
+  height = 10,
+  mode = "diagnostics",
+  auto_open = false,
+  auto_close = true,
+})
+
+-- Keymaps para Trouble definidos en core/keymaps.lua
