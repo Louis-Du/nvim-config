@@ -1,30 +1,3 @@
-<<<<<<< HEAD
--- Calcula el ancho de una cadena considerando caracteres Unicode
-local function strlen(s)
-  return vim.fn.strdisplaywidth(s)
-end
-
--- Obtiene los últimos commits de git (si es un repo)
-local function get_git_commits()
-  if vim.fn.isdirectory(".git") == 0 then
-    return {}
-  end
-  local handle = io.popen("git log --oneline -n 5 2>/dev/null")
-  if not handle then return {} end
-  local result = handle:read("*a")
-  handle:close()
-  local lines = {}
-  for line in result:gmatch("[^\r\n]+") do
-    table.insert(lines, "  " .. line)
-  end
-  return lines
-end
-
--- Obtiene estadísticas del repo git
-=======
--- Devuelve estadísticas de git: total commits, ramas, último autor y fecha
->>>>>>> bf277df (feat(dashboard): colores y estadísticas restauradas en el dashboard)
-
 -- Calcula el ancho de una cadena considerando caracteres Unicode
 local function strlen(s)
   return vim.fn.strdisplaywidth(s)
@@ -81,13 +54,7 @@ math.randomseed(os.time())
 
 -- Módulo principal del dashboard
 local M = {}
-    table.insert(padded, string.rep(" ", math.max(pad, 0)) .. line)
-  end
-  return padded
-end
->>>>>>> bf277df (feat(dashboard): colores y estadísticas restauradas en el dashboard)
 
--- Función principal que arma y muestra el dashboard
 function M.setup()
   vim.api.nvim_create_autocmd("VimEnter", {
     callback = function()
@@ -100,7 +67,11 @@ function M.setup()
       local buf = vim.api.nvim_get_current_buf()
       local msg = messages[math.random(#messages)]
 
-      -- Limpiar el buffer actual y configurarlo como dashboard (solo lectura, sin swap, etc)
+      -- Definir highlights personalizados
+      vim.api.nvim_set_hl(0, "DashboardFrase", { fg = "#ffb86c", bold = true })
+      vim.api.nvim_set_hl(0, "DashboardMenu", { fg = "#8be9fd", bold = true })
+
+      -- Limpiar el buffer actual y configurarlo como dashboard
       vim.api.nvim_buf_set_lines(buf, 0, -1, false, {})
       vim.bo[buf].buftype = "nofile"
       vim.bo[buf].bufhidden = "wipe"
@@ -108,7 +79,7 @@ function M.setup()
       vim.bo[buf].buflisted = false
       vim.bo[buf].modifiable = true
 
-      -- ASCII Art (decoración visual)
+      -- ASCII Art
       local ascii_art = {
         "                                       ",
         "                                       ",
@@ -132,8 +103,9 @@ function M.setup()
       -- Contenido del dashboard
       local lines = {}
 
-      -- Columna izquierda: bloque de commits recientes (como historial de git)
+      -- Columna izquierda: bloque de commits (diseño limpio)
       local commits = get_git_commits()
+      local stats = get_git_stats()
       local left = {}
       table.insert(left, " ╭────────────────────  Últimos commits ─────────────────────╮ ")
       if #commits > 0 then
@@ -153,15 +125,15 @@ function M.setup()
         table.insert(left, "    No hay commits recientes.")
       end
       table.insert(left, " ╰─────────────────────────────────────────────────────────────╯ ")
-      -- Agregar bloque de estadísticas de git
-      local stats = get_git_stats()
+      -- Bloque de estadísticas de GitHub
+      -- Compactar bloque de estadísticas para no desformar el ASCII
       table.insert(left, string.format("   Repo:  %s   %s   %s   %s", stats.commits, stats.branches, stats.last.author, stats.last.date))
 
 
-      -- Bloque central: mensaje motivacional, arte y menú de opciones
+      -- Bloque central: mensaje, arte y opciones, todos alineados juntos
       local center_block = {}
       table.insert(center_block, "")
-      table.insert(center_block, msg)
+      table.insert(center_block, msg) -- solo el texto, highlight se aplica después
       table.insert(center_block, "")
       for _, line in ipairs(ascii_art) do
         table.insert(center_block, line)
@@ -179,7 +151,7 @@ function M.setup()
         table.insert(center_block, line)
       end
 
-      -- Centrado de bloques para que el dashboard se vea bien en cualquier tamaño de ventana
+      -- Centrar el bloque central completo respecto a la zona derecha de la pantalla
       local width = vim.api.nvim_get_option("columns")
 
       -- ancho del bloque izquierdo (unicode-aware)
@@ -211,58 +183,85 @@ function M.setup()
         end
       end
 
-      -- Unir ambas columnas (izquierda y centro), alineando arriba
+      -- Unir ambas columnas, alineando arriba
       local total_lines = math.max(#left, #center_block)
       local lines = {}
+      local center_line_indices = {}
       for i = 1, total_lines do
         local l = left[i] or ""
         local c = center_block[i] or ""
         table.insert(lines, l .. c)
+        center_line_indices[i] = #l
       end
-
-      -- Mostrar el dashboard en pantalla
-
-      -- Definir highlights personalizados (colores)
-      vim.api.nvim_set_hl(0, "DashboardFrase", { fg = "#ffb86c", bold = true })
-      vim.api.nvim_set_hl(0, "DashboardMenu", { fg = "#8be9fd", bold = true })
-      vim.api.nvim_set_hl(0, "DashboardStats", { fg = "#a6e3a1", bold = true })
 
       vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
-      -- Aplicar highlight a la frase motivacional (línea superior centrada)
+      -- Aplicar highlights reales SOLO en la columna central
+      -- Frase motivacional: buscar la línea que contiene la frase en la parte central
       local frase_line = nil
-      for i, line in ipairs(lines) do
-        if line:find(msg, 1, true) then frase_line = i - 1 break end
-      end
-      if frase_line then
-        local start_col = lines[frase_line+1]:find(msg, 1, true) - 1
-        vim.api.nvim_buf_add_highlight(buf, -1, "DashboardFrase", frase_line, start_col, start_col + #msg)
-      end
-      -- Aplicar highlight al menú de opciones
-      for i, line in ipairs(lines) do
-        for _, pat in ipairs({"%[n%]", "%[f%]", "%[r%]", "%[e%]", "%[q%]"}) do
-          local s, e = line:find(pat)
-          if s and e then
-            vim.api.nvim_buf_add_highlight(buf, -1, "DashboardMenu", i-1, s-1, e)
+      local frase_start = nil
+      for i = 1, total_lines do
+        local l = lines[i]
+        local c = center_block[i] or ""
+        -- Buscar la frase solo en la parte central de la línea
+        local start_col = center_line_indices[i]
+        if c == msg and #c > 0 then
+          frase_line = i - 1
+          frase_start = start_col
+          break
+        elseif l and msg and #msg > 0 then
+          local s, e = l:find(msg, 1, true)
+          if s and s >= (start_col + 1) then
+            frase_line = i - 1
+            frase_start = s - 1
+            break
           end
         end
       end
-      -- Aplicar highlight al bloque de estadísticas de git
-      for i, line in ipairs(lines) do
-        if line:find(" Repo:") then
-          local s = line:find(" Repo:")
-          vim.api.nvim_buf_add_highlight(buf, -1, "DashboardStats", i-1, s-1, #line)
+      if frase_line and frase_start then
+        vim.api.nvim_buf_add_highlight(buf, -1, "DashboardFrase", frase_line, frase_start, frase_start + #msg)
+      end
+      -- Opciones del menú (buscar por patrón SOLO en la columna central)
+      for i = 1, total_lines do
+        local c = center_block[i] or ""
+        local l = lines[i]
+        local start_col = center_line_indices[i]
+        if c:find("%[n%]  Nuevo archivo") then
+          local s, e = c:find("%[n%]")
+          if s and e then
+            vim.api.nvim_buf_add_highlight(buf, -1, "DashboardMenu", i-1, start_col + s - 1, start_col + e)
+          end
+        elseif c:find("%[f%]  Buscar archivo") then
+          local s, e = c:find("%[f%]")
+          if s and e then
+            vim.api.nvim_buf_add_highlight(buf, -1, "DashboardMenu", i-1, start_col + s - 1, start_col + e)
+          end
+        elseif c:find("%[r%]  Recientes") then
+          local s, e = c:find("%[r%]")
+          if s and e then
+            vim.api.nvim_buf_add_highlight(buf, -1, "DashboardMenu", i-1, start_col + s - 1, start_col + e)
+          end
+        elseif c:find("%[e%]  Explorador") then
+          local s, e = c:find("%[e%]")
+          if s and e then
+            vim.api.nvim_buf_add_highlight(buf, -1, "DashboardMenu", i-1, start_col + s - 1, start_col + e)
+          end
+        elseif c:find("%[q%]  Salir") then
+          local s, e = c:find("%[q%]")
+          if s and e then
+            vim.api.nvim_buf_add_highlight(buf, -1, "DashboardMenu", i-1, start_col + s - 1, start_col + e)
+          end
         end
       end
       vim.bo[buf].modifiable = false
 
-      -- Desactivar números de línea, cursorline, spell, etc. para el dashboard
+      -- Estilo del dashboard (usar API en lugar de setlocal multilinea)
       vim.opt_local.number = false
       vim.opt_local.relativenumber = false
       vim.opt_local.cursorline = false
       vim.opt_local.spell = false
       vim.opt_local.signcolumn = "no"
 
-      -- Keymaps interactivos (solo para este buffer, como atajos en una pantalla de menú)
+      -- Keymaps interactivos (solo para este buffer)
       local map = function(key, cmd, desc)
         vim.keymap.set("n", key, cmd, { 
           buffer = buf, 
@@ -277,7 +276,7 @@ function M.setup()
       map("e", "<cmd>NvimTreeToggle<CR>", "Explorador")
       map("q", "<cmd>qa<CR>", "Salir")
 
-      -- Cerrar el dashboard automáticamente al abrir cualquier archivo real
+      -- Cerrar dashboard al abrir cualquier buffer normal
       vim.api.nvim_create_autocmd("BufEnter", {
         callback = function(args)
           -- Si entramos a un buffer normal (no especial), eliminar el dashboard si sigue vivo

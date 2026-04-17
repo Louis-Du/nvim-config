@@ -33,7 +33,7 @@ return require('packer').startup(function(use)
 
   -- Linea de indentación
   use 'lukas-reineke/indent-blankline.nvim'
-
+  
   -- Dependencias comunes
   use 'nvim-lua/plenary.nvim'
   use 'nvim-tree/nvim-web-devicons'
@@ -48,7 +48,7 @@ return require('packer').startup(function(use)
 
   -- Barra de estado
   use 'nvim-lualine/lualine.nvim'
-
+  
   -- Snippets
   use 'L3MON4D3/LuaSnip'
   use 'saadparwaiz1/cmp_luasnip'

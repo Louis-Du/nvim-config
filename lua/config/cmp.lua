@@ -5,11 +5,6 @@ if not cmp_ok then return end
 local luasnip_ok, luasnip = pcall(require, "luasnip")
 if not luasnip_ok then return end
 
-<<<<<<< HEAD
-require("luasnip.loaders.from_lua").lazy_load({
-  paths = "~/.config/nvim/lua/snippets"
-})
-=======
 local formatting = {}
 if lspkind_ok then
   formatting = {
@@ -20,7 +15,6 @@ if lspkind_ok then
     })
   }
 end
->>>>>>> mejoraEstetica
 
 cmp.setup({
   completion = {
@@ -39,16 +33,10 @@ cmp.setup({
   }),
 
   sources = {
-<<<<<<< HEAD
-    { name = 'luasnip' },
-    { name = 'buffer' },
-    { name = 'path' },
-=======
     { name = "nvim_lsp" },   -- 🔥 funciones, métodos, ()
     { name = "luasnip" },
     { name = "buffer" },
     { name = "path" },
->>>>>>> mejoraEstetica
   },
 
   formatting = formatting,
@@ -101,12 +89,4 @@ cmp.setup.cmdline(':', {
   },
 
   formatting = formatting,
-})
-
--- Autocompletado para :
-cmp.setup.cmdline(':', {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = {
-    { name = 'cmdline' }
-  }
 })
