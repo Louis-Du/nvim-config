@@ -1,39 +1,25 @@
--- core/keymaps.lua - Keymaps principales de Neovim
-
 
 local map = vim.keymap.set
 
--- =================== Telescope ===================
-map("n", "<leader>ff", function()
-  require("telescope.builtin").find_files()
-end, { desc = "Buscar archivos (Telescope)" })
-map("n", "<leader>fg", function()
-  require("telescope.builtin").live_grep()
-end, { desc = "Buscar texto en proyecto (Telescope)" })
-map("n", "<leader>fb", function()
-  require("telescope.builtin").buffers()
-end, { desc = "Listar buffers abiertos (Telescope)" })
-map("n", "<leader>fs", function()
-  require("telescope.builtin").lsp_document_symbols()
-end, { desc = "Buscar símbolos del documento (LSP)" })
+-- Telescope
+map("n", "<leader>ff", function() require("telescope.builtin").find_files() end, { desc = "Buscar archivos" })
+map("n", "<leader>fg", function() require("telescope.builtin").live_grep() end, { desc = "Buscar texto" })
+map("n", "<leader>fb", function() require("telescope.builtin").buffers() end, { desc = "Buffers abiertos" })
+map("n", "<leader>fs", function() require("telescope.builtin").lsp_document_symbols() end, { desc = "Símbolos LSP" })
 
--- =================== NvimTree ===================
-map("n", "<leader>e", function()
-  require("nvim-tree.api").tree.toggle()
-end, { desc = "Abrir/cerrar explorador de archivos" })
-map("n", "<leader>o", function()
-  require("nvim-tree.api").tree.focus()
-end, { desc = "Foco al explorador de archivos" })
-map("n", "<leader>r", ":NvimTreeFindFile<CR>", { desc = "Resaltar archivo actual en el árbol" })
-map("n", "<leader>R", ":NvimTreeRefresh<CR>", { desc = "Actualizar contenido del árbol" })
+-- NvimTree
+map("n", "<leader>e", function() require("nvim-tree.api").tree.toggle() end, { desc = "Explorador archivos" })
+map("n", "<leader>o", function() require("nvim-tree.api").tree.focus() end, { desc = "Foco explorador" })
+map("n", "<leader>r", ":NvimTreeFindFile<CR>", { desc = "Resaltar archivo actual" })
+map("n", "<leader>R", ":NvimTreeRefresh<CR>", { desc = "Actualizar árbol" })
 
--- =================== Navegación entre ventanas ===================
-map("n", "<C-h>", "<C-w>h", { desc = "Mover a ventana izquierda" })
-map("n", "<C-j>", "<C-w>j", { desc = "Mover a ventana abajo" })
-map("n", "<C-k>", "<C-w>k", { desc = "Mover a ventana arriba" })
-map("n", "<C-l>", "<C-w>l", { desc = "Mover a ventana derecha" })
+-- Navegación entre ventanas
+map("n", "<C-h>", "<C-w>h", { desc = "Ventana izquierda" })
+map("n", "<C-j>", "<C-w>j", { desc = "Ventana abajo" })
+map("n", "<C-k>", "<C-w>k", { desc = "Ventana arriba" })
+map("n", "<C-l>", "<C-w>l", { desc = "Ventana derecha" })
 
--- =================== Trouble (diagnósticos) ===================
+-- Trouble (diagnósticos)
 local function trouble_cmd(cmd_new, cmd_legacy)
   if pcall(vim.cmd, "Trouble " .. cmd_new) then return end
   if not pcall(vim.cmd, "TroubleToggle " .. cmd_legacy) then

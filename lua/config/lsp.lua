@@ -43,26 +43,18 @@ if not cmp_lsp_ok then return end
 
 local capabilities = cmp_lsp.default_capabilities()
 
--- Intentar encontrar JDTLS en ubicaciones comunes
 local function find_jdtls_cmd()
-  local possible_paths = {
+  for _, path in ipairs({
     vim.fn.expand("~/.local/share/eclipse/jdt-language-server/bin/jdtls"),
     vim.fn.expand("~/.local/share/eclipse/bin/jdtls"),
     vim.fn.expand("~/.local/bin/jdtls"),
     "/usr/local/bin/jdtls",
     "/usr/bin/jdtls",
-  }
-  
-  for _, path in ipairs(possible_paths) do
-    if vim.fn.executable(path) == 1 then
-      return path
-    end
+  }) do
+    if vim.fn.executable(path) == 1 then return path end
   end
-  
-  return nil
 end
 
--- JDTLS se inicia SOLO cuando abrimos un archivo Java
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "java",
   callback = function()
@@ -124,7 +116,6 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- Keymaps LSP
 local opts = { noremap = true, silent = true }
 vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
 vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)

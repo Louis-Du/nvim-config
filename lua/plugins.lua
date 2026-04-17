@@ -1,43 +1,19 @@
-<<<<<<< HEAD
-vim.schedule(function()
-  if vim.g.is_termux then
-    vim.notify("Neovim en Termux 🟢", vim.log.levels.INFO)
-  else
-    vim.notify("Neovim en Fedora 🟣", vim.log.levels.INFO)
-  end
-end)
-
-vim.call("plug#begin", "~/.local/share/nvim/plugged")
-
--- ===== CORE (ambos) =====
-
--- LSP base (solo cliente)
-vim.cmd("Plug 'neovim/nvim-lspconfig'")
-=======
--- Gestión de plugins con Packer.nvim
-
--- Auto-instalador de Packer
-local ensure_packer = function()
-  local fn = vim.fn
-  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-  if fn.empty(fn.glob(install_path)) > 0 then
-    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
-    vim.cmd [[packadd packer.nvim]]
-    return true
-  end
-  return false
+-- Auto-instalador y autocmd para Packer
+local fn = vim.fn
+local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+if fn.empty(fn.glob(install_path)) > 0 then
+  fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+  vim.cmd [[packadd packer.nvim]]
 end
->>>>>>> mejoraEstetica
 
-local packer_bootstrap = ensure_packer()
-
--- Auto-compilar cuando se guarda este archivo
-vim.cmd([[
+vim.cmd [[
   augroup packer_user_config
     autocmd!
     autocmd BufWritePost plugins.lua source <afile> | PackerCompile
-  augroup end
-]])
+  augroup END
+]]
+
+pcall(require, 'config.notify')
 
 return require('packer').startup(function(use)
   -- Temas
@@ -55,22 +31,9 @@ return require('packer').startup(function(use)
   -- Packer se gestiona a sí mismo
   use 'wbthomason/packer.nvim'
 
-<<<<<<< HEAD
--- Explorador
-vim.cmd("Plug 'nvim-tree/nvim-tree.lua'")
-vim.cmd("Plug 'nvim-tree/nvim-web-devicons'")
-
--- ===== SOLO FEDORA =====
-if not vim.g.is_termux then
-  vim.cmd("Plug 'williamboman/mason.nvim'")
-  vim.cmd("Plug 'williamboman/mason-lspconfig.nvim'")
-end
-
-vim.call("plug#end")
-=======
   -- Linea de indentación
   use 'lukas-reineke/indent-blankline.nvim'
-  
+
   -- Dependencias comunes
   use 'nvim-lua/plenary.nvim'
   use 'nvim-tree/nvim-web-devicons'
@@ -85,7 +48,7 @@ vim.call("plug#end")
 
   -- Barra de estado
   use 'nvim-lualine/lualine.nvim'
-  
+
   -- Snippets
   use 'L3MON4D3/LuaSnip'
   use 'saadparwaiz1/cmp_luasnip'
@@ -151,4 +114,3 @@ vim.call("plug#end")
     require('packer').sync()
   end
 end)
->>>>>>> mejoraEstetica

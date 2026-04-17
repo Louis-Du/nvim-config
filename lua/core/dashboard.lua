@@ -1,28 +1,72 @@
+<<<<<<< HEAD
+-- Calcula el ancho de una cadena considerando caracteres Unicode
 local function strlen(s)
   return vim.fn.strdisplaywidth(s)
 end
+
+-- Obtiene los últimos commits de git (si es un repo)
 local function get_git_commits()
-  -- Verifica si es repositorio git
   if vim.fn.isdirectory(".git") == 0 then
     return {}
   end
-
   local handle = io.popen("git log --oneline -n 5 2>/dev/null")
   if not handle then return {} end
-
   local result = handle:read("*a")
   handle:close()
-
   local lines = {}
   for line in result:gmatch("[^\r\n]+") do
     table.insert(lines, "  " .. line)
   end
-
   return lines
 end
 
--- Dashboard minimalista e interactivo
-local M = {}
+-- Obtiene estadísticas del repo git
+=======
+-- Devuelve estadísticas de git: total commits, ramas, último autor y fecha
+>>>>>>> bf277df (feat(dashboard): colores y estadísticas restauradas en el dashboard)
+
+-- Calcula el ancho de una cadena considerando caracteres Unicode
+local function strlen(s)
+  return vim.fn.strdisplaywidth(s)
+end
+
+-- Obtiene los últimos commits de git (si es un repo)
+local function get_git_commits()
+  if vim.fn.isdirectory(".git") == 0 then
+    return {}
+  end
+  local handle = io.popen("git log --oneline -n 5 2>/dev/null")
+  if not handle then return {} end
+  local result = handle:read("*a")
+  handle:close()
+  local lines = {}
+  for line in result:gmatch("[^\r\n]+") do
+    table.insert(lines, "  " .. line)
+  end
+  return lines
+end
+
+-- Obtiene estadísticas del repo git
+local function get_git_stats()
+  if vim.fn.isdirectory(".git") == 0 then
+    return {
+      commits = "-",
+      branches = "-",
+      last = { author = "-", date = "-" }
+    }
+  end
+  local commits = io.popen("git rev-list --count HEAD 2>/dev/null"):read("*l") or "-"
+  local branches = io.popen("git branch --list 2>/dev/null | wc -l"):read("*l") or "-"
+  local last_author = io.popen("git log -1 --pretty=format:'%an' 2>/dev/null"):read("*l") or "-"
+  local last_date = io.popen("git log -1 --date=short --pretty=format:'%ad' 2>/dev/null"):read("*l") or "-"
+  return {
+    commits = commits,
+    branches = branches,
+    last = { author = last_author, date = last_date }
+  }
+end
+
+-- Mensajes motivacionales para el dashboard
 local messages = {
   "𝙷𝚘𝚢 𝚜𝚊𝚋𝚎𝚜 𝚖á𝚜 𝚚𝚞𝚎 𝚌𝚞𝚊𝚗𝚍𝚘 𝚎𝚖𝚙𝚎𝚣𝚊𝚜𝚝𝚎.",
   "𝙴𝚕 𝚌ó𝚍𝚒𝚐𝚘 𝚝𝚊𝚖𝚋𝚒é𝚗 𝚎𝚜 𝚞𝚗𝚊 𝚏𝚘𝚛𝚖𝚊 𝚍𝚎 𝚙𝚎𝚗𝚜𝚊𝚛.",
@@ -31,40 +75,19 @@ local messages = {
   "𝙻𝚊 𝚌𝚘𝚗𝚜𝚝𝚊𝚗𝚌𝚒𝚊 𝚟𝚎𝚗𝚌𝚎 𝚊𝚕 𝚝𝚊𝚕𝚎𝚗𝚝𝚘 𝚍𝚒𝚜𝚝𝚛á𝚒𝚍𝚘.",
   "𝙴𝚕 𝚎𝚛𝚛𝚘𝚛 𝚎𝚜 𝚙𝚊𝚛𝚝𝚎 𝚍𝚎𝚕 𝚌𝚊𝚖𝚒𝚗𝚘, 𝚗𝚘 𝚍𝚎𝚕 𝚏𝚒𝚗𝚊𝚕.",
   "𝙻𝚘 𝚍𝚒𝚏í𝚌𝚒𝚕 𝚍𝚎 𝚑𝚘𝚢 𝚜𝚎𝚛á 𝚛𝚞𝚝𝚒𝚗𝚊 𝚖𝚊ñ𝚊𝚗𝚊.",
-  "Controlar la complejidad es la esencia de la programación. — Brian Kernighan",
-  "Primero, resuelve el problema. Luego, escribe el código. — John Johnson",
-  "No soy un gran programador; solo soy un buen programador con grandes hábitos. — Kent Beck",
-  "La única forma de aprender un nuevo lenguaje de programación es escribiendo programas en él. — Dennis Ritchie (Creador de C)",
-  "No te preocupes si no funciona bien. Si todo funcionara, no tendrías trabajo. — Ley de Mosher",
-  "La mejor manera de predecir el futuro es inventarlo. — Alan Kay.",
-  "No te detengas cuando estés cansado, detente cuando hayas terminado de refactorizar. — Adaptación de la cultura Clean Code.",
-  "Escribe siempre tu código como si la persona que lo fuera a mantener fuera un psicópata violento que sabe dónde vives. — John Woods.",
-  "La duda es el principio de la sabiduría. — Aristóteles",
-  "La felicidad de tu vida depende de la calidad de tus pensamientos. — Marco Aurelio.",
-  "El arte de programar es el arte de organizar la complejidad, de dominar la multitud y evitar su caos bastardo de la forma más eficaz posible.- Edsger Wybe Dijkstra."
 }
 
 math.randomseed(os.time())
 
-local function center_text(lines)
-  local width = vim.api.nvim_get_option("columns")
-  local height = vim.api.nvim_get_option("lines")
-
-  local padded = {}
-  local top_padding = math.floor((height - #lines) / 2)
-
-  for _ = 1, top_padding do
-    table.insert(padded, "")
-  end
-
-  for _, line in ipairs(lines) do
-    local pad = math.floor((width - #line) / 2)
+-- Módulo principal del dashboard
+local M = {}
     table.insert(padded, string.rep(" ", math.max(pad, 0)) .. line)
   end
-
   return padded
 end
+>>>>>>> bf277df (feat(dashboard): colores y estadísticas restauradas en el dashboard)
 
+-- Función principal que arma y muestra el dashboard
 function M.setup()
   vim.api.nvim_create_autocmd("VimEnter", {
     callback = function()
@@ -77,7 +100,7 @@ function M.setup()
       local buf = vim.api.nvim_get_current_buf()
       local msg = messages[math.random(#messages)]
 
-      -- Limpiar el buffer actual y configurarlo como dashboard
+      -- Limpiar el buffer actual y configurarlo como dashboard (solo lectura, sin swap, etc)
       vim.api.nvim_buf_set_lines(buf, 0, -1, false, {})
       vim.bo[buf].buftype = "nofile"
       vim.bo[buf].bufhidden = "wipe"
@@ -85,7 +108,7 @@ function M.setup()
       vim.bo[buf].buflisted = false
       vim.bo[buf].modifiable = true
 
-      -- ASCII Art
+      -- ASCII Art (decoración visual)
       local ascii_art = {
         "                                       ",
         "                                       ",
@@ -109,7 +132,7 @@ function M.setup()
       -- Contenido del dashboard
       local lines = {}
 
-      -- Columna izquierda: bloque de commits (diseño limpio)
+      -- Columna izquierda: bloque de commits recientes (como historial de git)
       local commits = get_git_commits()
       local left = {}
       table.insert(left, " ╭────────────────────  Últimos commits ─────────────────────╮ ")
@@ -130,9 +153,12 @@ function M.setup()
         table.insert(left, "    No hay commits recientes.")
       end
       table.insert(left, " ╰─────────────────────────────────────────────────────────────╯ ")
+      -- Agregar bloque de estadísticas de git
+      local stats = get_git_stats()
+      table.insert(left, string.format("   Repo:  %s   %s   %s   %s", stats.commits, stats.branches, stats.last.author, stats.last.date))
 
 
-      -- Bloque central: mensaje, arte y opciones, todos alineados juntos
+      -- Bloque central: mensaje motivacional, arte y menú de opciones
       local center_block = {}
       table.insert(center_block, "")
       table.insert(center_block, msg)
@@ -153,7 +179,7 @@ function M.setup()
         table.insert(center_block, line)
       end
 
-      -- Centrar el bloque central completo respecto a la zona derecha de la pantalla
+      -- Centrado de bloques para que el dashboard se vea bien en cualquier tamaño de ventana
       local width = vim.api.nvim_get_option("columns")
 
       -- ancho del bloque izquierdo (unicode-aware)
@@ -185,7 +211,7 @@ function M.setup()
         end
       end
 
-      -- Unir ambas columnas, alineando arriba
+      -- Unir ambas columnas (izquierda y centro), alineando arriba
       local total_lines = math.max(#left, #center_block)
       local lines = {}
       for i = 1, total_lines do
@@ -194,17 +220,49 @@ function M.setup()
         table.insert(lines, l .. c)
       end
 
+      -- Mostrar el dashboard en pantalla
+
+      -- Definir highlights personalizados (colores)
+      vim.api.nvim_set_hl(0, "DashboardFrase", { fg = "#ffb86c", bold = true })
+      vim.api.nvim_set_hl(0, "DashboardMenu", { fg = "#8be9fd", bold = true })
+      vim.api.nvim_set_hl(0, "DashboardStats", { fg = "#a6e3a1", bold = true })
+
       vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+      -- Aplicar highlight a la frase motivacional (línea superior centrada)
+      local frase_line = nil
+      for i, line in ipairs(lines) do
+        if line:find(msg, 1, true) then frase_line = i - 1 break end
+      end
+      if frase_line then
+        local start_col = lines[frase_line+1]:find(msg, 1, true) - 1
+        vim.api.nvim_buf_add_highlight(buf, -1, "DashboardFrase", frase_line, start_col, start_col + #msg)
+      end
+      -- Aplicar highlight al menú de opciones
+      for i, line in ipairs(lines) do
+        for _, pat in ipairs({"%[n%]", "%[f%]", "%[r%]", "%[e%]", "%[q%]"}) do
+          local s, e = line:find(pat)
+          if s and e then
+            vim.api.nvim_buf_add_highlight(buf, -1, "DashboardMenu", i-1, s-1, e)
+          end
+        end
+      end
+      -- Aplicar highlight al bloque de estadísticas de git
+      for i, line in ipairs(lines) do
+        if line:find(" Repo:") then
+          local s = line:find(" Repo:")
+          vim.api.nvim_buf_add_highlight(buf, -1, "DashboardStats", i-1, s-1, #line)
+        end
+      end
       vim.bo[buf].modifiable = false
 
-      -- Estilo del dashboard (usar API en lugar de setlocal multilinea)
+      -- Desactivar números de línea, cursorline, spell, etc. para el dashboard
       vim.opt_local.number = false
       vim.opt_local.relativenumber = false
       vim.opt_local.cursorline = false
       vim.opt_local.spell = false
       vim.opt_local.signcolumn = "no"
 
-      -- Keymaps interactivos (solo para este buffer)
+      -- Keymaps interactivos (solo para este buffer, como atajos en una pantalla de menú)
       local map = function(key, cmd, desc)
         vim.keymap.set("n", key, cmd, { 
           buffer = buf, 
@@ -219,7 +277,7 @@ function M.setup()
       map("e", "<cmd>NvimTreeToggle<CR>", "Explorador")
       map("q", "<cmd>qa<CR>", "Salir")
 
-      -- Cerrar dashboard al abrir cualquier buffer normal
+      -- Cerrar el dashboard automáticamente al abrir cualquier archivo real
       vim.api.nvim_create_autocmd("BufEnter", {
         callback = function(args)
           -- Si entramos a un buffer normal (no especial), eliminar el dashboard si sigue vivo
