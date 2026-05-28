@@ -1,26 +1,19 @@
--- Gestión de plugins con Packer.nvim
-
--- Auto-instalador de Packer
-local ensure_packer = function()
-  local fn = vim.fn
-  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-  if fn.empty(fn.glob(install_path)) > 0 then
-    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
-    vim.cmd [[packadd packer.nvim]]
-    return true
-  end
-  return false
+-- Auto-instalador y autocmd para Packer
+local fn = vim.fn
+local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+if fn.empty(fn.glob(install_path)) > 0 then
+  fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+  vim.cmd [[packadd packer.nvim]]
 end
 
-local packer_bootstrap = ensure_packer()
-
--- Auto-compilar cuando se guarda este archivo
-vim.cmd([[
+vim.cmd [[
   augroup packer_user_config
     autocmd!
     autocmd BufWritePost plugins.lua source <afile> | PackerCompile
-  augroup end
-]])
+  augroup END
+]]
+
+pcall(require, 'config.notify')
 
 return require('packer').startup(function(use)
   -- Temas
@@ -107,6 +100,14 @@ return require('packer').startup(function(use)
 
   -- Reader
   use "Sang-it/reader.nvim"
+
+  -- Otros plugins visuales y de productividad
+  use 'tzachar/local-highlight.nvim'
+  use 'echasnovski/mini.animate'
+  use({ 'iamcco/markdown-preview.nvim', run = 'cd app && npm install', ft = { 'markdown' } })
+  use 'phaazon/hop.nvim'
+  use 'sindrets/diffview.nvim'
+  use 'HiPhish/rainbow-delimiters.nvim'
 
   -- Sincronizar plugins si es primera instalación
   if packer_bootstrap then
