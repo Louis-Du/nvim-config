@@ -6,48 +6,59 @@ wk.setup({
     border = "rounded",
   },
   layout = {
-    spacing = 6,
-  },
+  spacing = 6,
+  align = "center",
+},
 })
 
 wk.register({
   f = {
-    name = "Buscar",
+    name = "🔍 Buscar",
     f = "Archivos",
     g = "Texto",
     b = "Buffers",
-    s = "Símbolos LSP",
+    s = "Símbolos",
   },
+
+  e = "📂 Explorador",
+
+  o = "📍 Enfocar árbol",
+  r = "📍 Archivo actual",
+  R = "🔄 Refrescar árbol",
+
   b = {
-    name = "Buffers",
+    name = "📁 Buffers",
     d = "Cerrar buffer",
   },
+
   x = {
-    name = "Diagnósticos",
+    name = "⚠ Diagnósticos",
     x = "Todos",
     w = "Workspace",
     d = "Documento",
     q = "Quickfix",
   },
-  D = "Ver diagnóstico flotante",
+
   d = {
-    name = "Debug",
-    b = "Toggle Breakpoint",
+    name = "🐞 Debug",
+    b = "Breakpoint",
     B = "Breakpoint condicional",
-    r = "Abrir REPL",
-    l = "Run Last",
-    T = "Terminar",
-    u = "Toggle UI",
-    h = "Hover",
     c = "Continuar",
-    v = "Vista completa/simple",
+    r = "REPL",
+    l = "Run last",
+    T = "Terminar",
+    u = "UI",
+    h = "Hover",
+    v = "Vista",
   },
-  t = {
-    name = "Test (Java)",
-    m = "Test método actual",
-    c = "Test clase",
+
+  r = {
+    name = "📖 Reader",
+    r = "Modo lectura",
   },
-  e = "Explorador archivos",
-  r = "Encontrar archivo",
-  R = "Refrescar árbol",
+
+  y = "📋 Copiar todo",
+  D = "🔎 Ver diagnóstico flotante",
+
 }, { prefix = "<leader>" })
+

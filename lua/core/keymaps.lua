@@ -59,17 +59,18 @@ map("n", "<leader>dh", function() require("dap.ui.widgets").hover() end, { desc 
 map("n", "<leader>dc", function() require("dap").continue() end, { desc = "Debug: Continuar ejecución" })
 map("n", "<leader>dv", function() require("config.dap").toggle_full_view() end, { desc = "Debug: Vista completa/simple" })
 
--- =================== Diagnóstico flotante ===================
-map("n", "<leader>D", vim.diagnostic.open_float, { desc = "Ver diagnóstico flotante actual" })
+-- Diagnóstico flotante (cambié el atajo para evitar conflicto con nvim-tree)
+map("n", "<leader>.D", vim.diagnostic.open_float, { desc = "diag float" })
 
--- =================== Reader ===================
-map("n", "<leader>rr", function()
-  require("reader").open()
-end, { desc = "Abrir modo lectura (Reader)" })
+-- ===========================================================
+-- Reader
+-- ===========================================================
+map("n", "<leader>.r", "<cmd>Reader<CR>", { desc = "reader" })
 
--- =================== Copiar todo ===================
-map("n", "<leader>y", function()
+-- ===========================================================
+-- Copiar todo
+-- ===========================================================
+map("n", "<leader>.y", function()
   vim.cmd("%y+")
-end, { desc = "Copiar todo el archivo (clipboard)" })
-
+end, { desc = "copy file" })
 
